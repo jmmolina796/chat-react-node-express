@@ -1,2 +1,8 @@
 browserify ./src/app.js > ./public/dist/build.js -t [ babelify --presets [ es2015 react ] ]
 watchify ./src/app.js -v -t [ babelify --presets [ es2015 react] ] -o ./public/dist/build.js
+
+git add .
+git commit -m "message"
+git status
+git log
+git push -u origin master
