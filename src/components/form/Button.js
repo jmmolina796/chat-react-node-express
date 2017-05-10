@@ -3,7 +3,7 @@ import React from "react";
 export default class Button extends React.Component {
 	render() {
 		const buttonType = ["default", "accept", "cancel", "emphasis"];
-		let typeButton = "button-";
+		let typeButton = "button button-";
 		typeButton += ( buttonType.indexOf(this.props.type) != -1 ? this.props.type : "default" );
 
 		return (
