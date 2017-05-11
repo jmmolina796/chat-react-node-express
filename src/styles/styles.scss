@@ -14,9 +14,9 @@ h3,
 h4,
 h5,
 h6 {
+	margin-bottom: 15px;
 	margin: 0;
 	text-align: center;
-	margin-bottom: 15px;
 }
 
 .sectionContainer {
@@ -57,10 +57,10 @@ h6 {
 	$cancel: #d9534f;
 	$accept: #286090;
 
+	border-radius: 5px;
+	cursor: pointer;
 	display: inline-block;
 	padding: 5px 10px;
-	cursor: pointer;
-	border-radius: 5px;
 
 	&-default {
 		background-color: $default;

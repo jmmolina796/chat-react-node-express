@@ -43,7 +43,7 @@ export default class SignIn extends React.Component {
 		} else {
 			
 			axios.post("/person", {
-				"hey":"Im gy"
+				"hey":"Im"
 			})
 			.then((res) => {
 				debugger;

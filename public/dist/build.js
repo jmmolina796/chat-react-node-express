@@ -22095,7 +22095,7 @@ var SignIn = function (_React$Component) {
 			} else {
 
 				_axios2.default.post("/person", {
-					"hey": "Im gy"
+					"hey": "Im"
 				}).then(function (res) {
 					debugger;
 				}).catch(function (err) {

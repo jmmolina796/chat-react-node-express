@@ -13,9 +13,9 @@ h3,
 h4,
 h5,
 h6 {
+  margin-bottom: 15px;
   margin: 0;
-  text-align: center;
-  margin-bottom: 15px; }
+  text-align: center; }
 
 .sectionContainer {
   align-items: center;
@@ -40,10 +40,10 @@ h6 {
       margin-bottom: 0; }
 
 .button {
-  display: inline-block;
-  padding: 5px 10px;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 5px; }
+  display: inline-block;
+  padding: 5px 10px; }
   .button-default {
     background-color: #e6e6e6;
     color: #333; }
