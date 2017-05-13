@@ -6,9 +6,11 @@ const router = express.Router();
 
 router.post("/", (req, res) => {
 	
-	const schema = Person.getPersons();
+	const email = req.body.email;
+	const password = req.body.password;
+	const action = Person.singIn(email,password);
 
-	query.execute(schema, (result) => {
+	query.execute(action, (result) => {
 		res.json(result);
 	});
 
