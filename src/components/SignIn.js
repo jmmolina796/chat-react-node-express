@@ -15,7 +15,7 @@ export default class SignIn extends React.Component {
 		}
 		
 		this.handleChange = this.handleChange.bind(this);
-		this.handleClick = this.handleClick.bind(this);
+		this.handleSignInClick = this.handleSignInClick.bind(this);
 	}
 
 	handleChange(error, element) {
@@ -25,7 +25,7 @@ export default class SignIn extends React.Component {
 		this.setState( { [name]: state } );
 	}
 
-	handleClick() {
+	handleSignInClick() {
 		
 		let changes = {};
 		let error = false;
@@ -42,7 +42,6 @@ export default class SignIn extends React.Component {
 		if (error) {
 			this.setState(changes);
 		} else {
-
 			axios.post("/person", {
 				email: this.state.email.value,
 				password: this.state.password.value
@@ -57,10 +56,7 @@ export default class SignIn extends React.Component {
 			.catch((err) => {
 				debugger;
 			});
-
 		}
-
-
 	}
 
 	render() {
@@ -87,12 +83,12 @@ export default class SignIn extends React.Component {
 				</div>
 				<p className="message">{this.state.message}</p>
 				<div className="buttonContainer">
-					<Button type="accept" onClick={this.handleClick}>
+					<Button type="accept" onClick={this.handleSignInClick}>
 						Sign In
 					</Button>
 				</div>
 				<div className="buttonContainer">
-					<Button type="emphasis" onClick={this.handleClick}>
+					<Button type="emphasis" onClick={this.props.goSignUp}>
 						Sign Up
 					</Button>
 				</div>

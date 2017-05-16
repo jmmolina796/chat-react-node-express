@@ -52,16 +52,25 @@ export default class ValidatedInput extends React.Component {
 					placeholder={this.props.placeholder}
 					onChange={this.handleChange}
 					style={ {border: (this.props.error ? "red solid 1px" : "") } } />
-			)
+			);
 		} else if(this.props.type == "file") {
-			element = (
-				<input
-					type={this.props.type}
-					name={this.props.name}
-					accept={this.props.validation}
-					onChange={this.handleChange}
-					style={ {border: (this.props.error ? "red solid 1px" : "") } } />
-			)
+			if (this.props.value.trim().length == 0) {
+				element = (
+					<input
+						type={this.props.type}
+						name={this.props.name}
+						accept={this.props.validation}
+						onChange={this.handleChange}
+						style={ {border: (this.props.error ? "red solid 1px" : "") } } />
+				);
+			} else {
+				element = (
+					<div className="imgInput">
+						<img src={this.props.value} alt="#" />
+						<span onClick={this.props.onDelete}>X</span>
+					</div>
+				);
+			}
 		}
 
 		return (

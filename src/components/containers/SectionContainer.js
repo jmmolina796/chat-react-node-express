@@ -7,9 +7,9 @@ export default class SectionContainer extends React.Component {
 	render() {
 		let element = null;
 		if(this.props.url == "signin") {
-			element = <SignIn singIn={this.props.singIn} />;
+			element = <SignIn goSignUp={this.props.goSignUp} singIn={this.props.singIn} />;
 		} else if (this.props.url == "signup") {
-			element = <SignUp />;
+			element = <SignUp cancel={this.props.cancel} />;
 		}
 
 		return (

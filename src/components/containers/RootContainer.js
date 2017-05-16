@@ -10,22 +10,32 @@ export default class RootContainer extends React.Component {
 		
 		this.state = {
 			url: "signin",
-			user: []
+			userId: ""
 		}
 
 		this.singIn = this.singIn.bind(this);
+		this.goSignUp = this.goSignUp.bind(this);
+		this.cancel = this.cancel.bind(this);
 	}
 
 	singIn(data) {
-		this.setState({url: "chat", user: data});
+		this.setState({url: "chat", userId: data[0].id_person});
+	}
+
+	goSignUp() {
+		this.setState({url:"signup"});
+	}
+
+	cancel() {
+		this.setState({url:"signin"});
 	}
 
 	render() {
 		let element = null;
 		if (this.state.url == "signup" || this.state.url == "signin") {
-			element = <SectionContainer singIn={this.singIn} url={this.state.url} />;
+			element = <SectionContainer cancel={this.cancel} goSignUp={this.goSignUp} singIn={this.singIn} url={this.state.url} />;
 		} else if(this.state.url == "chat") {
-			element = <ChatContainer user={this.state.user} url={this.state.url}>HEY</ChatContainer>;
+			element = <ChatContainer userId={this.state.userId} url={this.state.url} />;
 		}
 		return (
 			<div id="rootContainer">

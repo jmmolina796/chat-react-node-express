@@ -22063,7 +22063,7 @@ var SignIn = function (_React$Component) {
 		};
 
 		_this.handleChange = _this.handleChange.bind(_this);
-		_this.handleClick = _this.handleClick.bind(_this);
+		_this.handleSignInClick = _this.handleSignInClick.bind(_this);
 		return _this;
 	}
 
@@ -22076,8 +22076,8 @@ var SignIn = function (_React$Component) {
 			this.setState(_defineProperty({}, name, state));
 		}
 	}, {
-		key: "handleClick",
-		value: function handleClick() {
+		key: "handleSignInClick",
+		value: function handleSignInClick() {
 			var _this2 = this;
 
 			var changes = {};
@@ -22095,7 +22095,6 @@ var SignIn = function (_React$Component) {
 			if (error) {
 				this.setState(changes);
 			} else {
-
 				_axios2.default.post("/person", {
 					email: this.state.email.value,
 					password: this.state.password.value
@@ -22151,7 +22150,7 @@ var SignIn = function (_React$Component) {
 					{ className: "buttonContainer" },
 					_react2.default.createElement(
 						_Button2.default,
-						{ type: "accept", onClick: this.handleClick },
+						{ type: "accept", onClick: this.handleSignInClick },
 						"Sign In"
 					)
 				),
@@ -22160,7 +22159,7 @@ var SignIn = function (_React$Component) {
 					{ className: "buttonContainer" },
 					_react2.default.createElement(
 						_Button2.default,
-						{ type: "emphasis", onClick: this.handleClick },
+						{ type: "emphasis", onClick: this.props.goSignUp },
 						"Sign Up"
 					)
 				)
@@ -22198,7 +22197,13 @@ var _Subtitle = require("./Subtitle");
 
 var _Subtitle2 = _interopRequireDefault(_Subtitle);
 
+var _axios = require("axios");
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -22212,10 +22217,100 @@ var SignUp = function (_React$Component) {
 	function SignUp(props) {
 		_classCallCheck(this, SignUp);
 
-		return _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (SignUp.__proto__ || Object.getPrototypeOf(SignUp)).call(this, props));
+
+		_this.state = {
+			name: { value: "", error: false },
+			last_name: { value: "", error: false },
+			e_mail: { value: "", error: false },
+			password: { value: "", error: false },
+			file: { value: "", error: false }
+		};
+
+		_this.handleChange = _this.handleChange.bind(_this);
+		_this.handleDeleteImageClick = _this.handleDeleteImageClick.bind(_this);
+		_this.handleSignUpClick = _this.handleSignUpClick.bind(_this);
+		return _this;
 	}
 
 	_createClass(SignUp, [{
+		key: "handleChange",
+		value: function handleChange(error, element) {
+			var _this2 = this;
+
+			var name = element.name;
+			var value = element.value;
+			var type = element.type;
+
+			var state = null;
+
+			if (type == "file" && !error) {
+				var file = new FormData();
+				file.append("file", element.files[0]);
+				_axios2.default.post("/person/upload-image", file, { headers: { 'Content-Type': 'multipart/form-data' } }).then(function (res) {
+					state = { value: res.data.name, error: error };
+					_this2.setState(_defineProperty({}, name, state));
+				}).catch(function (err) {
+					alert("An error occurred on the server.");
+				});
+			} else {
+				state = { value: value, error: error };
+				this.setState(_defineProperty({}, name, state));
+			}
+		}
+	}, {
+		key: "handleDeleteImageClick",
+		value: function handleDeleteImageClick() {
+			var _this3 = this;
+
+			var file = this.state.file.value;
+			var id_file = file.substring(file.lastIndexOf("/") + 1);
+			var state = { value: "", error: false };
+
+			_axios2.default.post("/person/delete-image/" + id_file).then(function (res) {
+				_this3.setState({ file: state });
+			}).catch(function (err) {
+				debugger;
+			});
+		}
+	}, {
+		key: "handleSignUpClick",
+		value: function handleSignUpClick() {
+			var changes = {};
+			var error = false;
+
+			if (this.state.name.value.trim() == "" || this.state.name.error) {
+				changes.name = { value: this.state.name.value, error: true };
+				error = true;
+			}
+
+			if (this.state.last_name.value.trim() == "" || this.state.last_name.error) {
+				changes.last_name = { value: this.state.last_name.value, error: true };
+				error = true;
+			}
+
+			if (this.state.e_mail.value.trim() == "" || this.state.e_mail.error) {
+				changes.e_mail = { value: this.state.e_mail.value, error: true };
+				error = true;
+			}
+
+			if (this.state.password.value.trim() == "" || this.state.password.error) {
+				changes.password = { value: this.state.password.value, error: true };
+				error = true;
+			}
+
+			if (this.state.file.value.trim() == "" || this.state.file.error) {
+				changes.file = { value: this.state.file.value, error: true };
+				error = true;
+			}
+
+			if (error) {
+				this.setState(changes);
+			} else {
+				alert();
+			}
+		}
+	}, {
 		key: "render",
 		value: function render() {
 			return _react2.default.createElement(
@@ -22224,30 +22319,66 @@ var SignUp = function (_React$Component) {
 				_react2.default.createElement(
 					_Subtitle2.default,
 					null,
-					"HEY"
+					"Sign Up"
 				),
 				_react2.default.createElement(_ValidatedInput2.default, {
 					type: "text",
 					name: "name",
 					placeholder: "Name:",
 					validation: "name",
-					onChange: this.props.onChange }),
+					value: this.state.name.value,
+					error: this.state.name.error,
+					onChange: this.handleChange }),
 				_react2.default.createElement(_ValidatedInput2.default, {
 					type: "text",
 					name: "last_name",
 					placeholder: "Last name:",
 					validation: "last_name",
-					onChange: this.props.onChange }),
+					value: this.state.last_name.value,
+					error: this.state.last_name.error,
+					onChange: this.handleChange }),
+				_react2.default.createElement(_ValidatedInput2.default, {
+					type: "text",
+					name: "e_mail",
+					placeholder: "E-mail:",
+					validation: "email",
+					value: this.state.e_mail.value,
+					error: this.state.e_mail.error,
+					onChange: this.handleChange }),
+				_react2.default.createElement(_ValidatedInput2.default, {
+					type: "password",
+					name: "password",
+					placeholder: "Password:",
+					validation: "password",
+					value: this.state.password.value,
+					error: this.state.password.error,
+					onChange: this.handleChange }),
 				_react2.default.createElement(_ValidatedInput2.default, {
 					type: "file",
-					name: "last_name",
-					placeholder: "Last name:",
+					name: "file",
+					placeholder: "Image:",
 					validation: ".png, .jpg, .jpeg",
-					onChange: this.props.onChange }),
+					value: this.state.file.value,
+					error: this.state.file.error,
+					onChange: this.handleChange,
+					onDelete: this.handleDeleteImageClick }),
 				_react2.default.createElement(
-					_Button2.default,
-					{ type: "emphasis", onClick: click },
-					"hey"
+					"div",
+					{ className: "buttonContainer", onClick: this.handleSignUpClick },
+					_react2.default.createElement(
+						_Button2.default,
+						{ type: "emphasis" },
+						"Sign Up"
+					)
+				),
+				_react2.default.createElement(
+					"div",
+					{ className: "buttonContainer" },
+					_react2.default.createElement(
+						_Button2.default,
+						{ type: "cancel", onClick: this.props.cancel },
+						"Cancel"
+					)
 				)
 			);
 		}
@@ -22258,7 +22389,7 @@ var SignUp = function (_React$Component) {
 
 exports.default = SignUp;
 
-},{"./Subtitle":209,"./form/Button":213,"./form/ValidatedInput":214,"react":205}],209:[function(require,module,exports){
+},{"./Subtitle":209,"./form/Button":213,"./form/ValidatedInput":214,"axios":1,"react":205}],209:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22317,6 +22448,10 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _axios = require("axios");
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22328,13 +22463,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ChatContainer = function (_React$Component) {
 	_inherits(ChatContainer, _React$Component);
 
-	function ChatContainer() {
+	function ChatContainer(props) {
 		_classCallCheck(this, ChatContainer);
 
-		return _possibleConstructorReturn(this, (ChatContainer.__proto__ || Object.getPrototypeOf(ChatContainer)).apply(this, arguments));
+		return _possibleConstructorReturn(this, (ChatContainer.__proto__ || Object.getPrototypeOf(ChatContainer)).call(this, props));
 	}
 
 	_createClass(ChatContainer, [{
+		key: "componentWillMount",
+		value: function componentWillMount() {
+			_axios2.default.get("/person/" + this.props.userId).then(function (res) {
+				debugger;
+			}).catch(function (err) {});
+		}
+	}, {
 		key: "render",
 		value: function render() {
 			return _react2.default.createElement(
@@ -22350,7 +22492,7 @@ var ChatContainer = function (_React$Component) {
 
 exports.default = ChatContainer;
 
-},{"react":205}],211:[function(require,module,exports){
+},{"axios":1,"react":205}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22389,30 +22531,38 @@ var RootContainer = function (_React$Component) {
 
 		_this.state = {
 			url: "signin",
-			user: []
+			userId: ""
 		};
 
 		_this.singIn = _this.singIn.bind(_this);
+		_this.goSignUp = _this.goSignUp.bind(_this);
+		_this.cancel = _this.cancel.bind(_this);
 		return _this;
 	}
 
 	_createClass(RootContainer, [{
 		key: "singIn",
 		value: function singIn(data) {
-			this.setState({ url: "chat", user: data });
+			this.setState({ url: "chat", userId: data[0].id_person });
+		}
+	}, {
+		key: "goSignUp",
+		value: function goSignUp() {
+			this.setState({ url: "signup" });
+		}
+	}, {
+		key: "cancel",
+		value: function cancel() {
+			this.setState({ url: "signin" });
 		}
 	}, {
 		key: "render",
 		value: function render() {
 			var element = null;
 			if (this.state.url == "signup" || this.state.url == "signin") {
-				element = _react2.default.createElement(_SectionContainer2.default, { singIn: this.singIn, url: this.state.url });
+				element = _react2.default.createElement(_SectionContainer2.default, { cancel: this.cancel, goSignUp: this.goSignUp, singIn: this.singIn, url: this.state.url });
 			} else if (this.state.url == "chat") {
-				element = _react2.default.createElement(
-					_ChatContainer2.default,
-					{ user: this.state.user, url: this.state.url },
-					"HEY"
-				);
+				element = _react2.default.createElement(_ChatContainer2.default, { userId: this.state.userId, url: this.state.url });
 			}
 			return _react2.default.createElement(
 				"div",
@@ -22470,9 +22620,9 @@ var SectionContainer = function (_React$Component) {
 		value: function render() {
 			var element = null;
 			if (this.props.url == "signin") {
-				element = _react2.default.createElement(_SignIn2.default, { singIn: this.props.singIn });
+				element = _react2.default.createElement(_SignIn2.default, { goSignUp: this.props.goSignUp, singIn: this.props.singIn });
 			} else if (this.props.url == "signup") {
-				element = _react2.default.createElement(_SignUp2.default, null);
+				element = _react2.default.createElement(_SignUp2.default, { cancel: this.props.cancel });
 			}
 
 			return _react2.default.createElement(
@@ -22619,12 +22769,25 @@ var ValidatedInput = function (_React$Component) {
 					onChange: this.handleChange,
 					style: { border: this.props.error ? "red solid 1px" : "" } });
 			} else if (this.props.type == "file") {
-				element = _react2.default.createElement("input", {
-					type: this.props.type,
-					name: this.props.name,
-					accept: this.props.validation,
-					onChange: this.handleChange,
-					style: { border: this.props.error ? "red solid 1px" : "" } });
+				if (this.props.value.trim().length == 0) {
+					element = _react2.default.createElement("input", {
+						type: this.props.type,
+						name: this.props.name,
+						accept: this.props.validation,
+						onChange: this.handleChange,
+						style: { border: this.props.error ? "red solid 1px" : "" } });
+				} else {
+					element = _react2.default.createElement(
+						"div",
+						{ className: "imgInput" },
+						_react2.default.createElement("img", { src: this.props.value, alt: "#" }),
+						_react2.default.createElement(
+							"span",
+							{ onClick: this.props.onDelete },
+							"X"
+						)
+					);
+				}
 			}
 
 			return _react2.default.createElement(
